@@ -457,8 +457,8 @@
   <div class="about-page">
     <div class="section-title">About This Project</div>
     <div class="divider"></div>
-    <p>The <strong>Manipuri New Word Bank</strong> is a collaborative initiative to document and preserve Manipuri (Meitei) vocabulary written in Bengali script, contributed by teachers, educator[...]
-    <p>Each entry records the word in Bengali script, its first letter classification, its meaning in Assamese, and its English translation — building a multilingual reference for Manipuri lear[...]
+    <p>The <strong>Manipuri New Word Bank</strong> is a collaborative initiative to document and preserve Manipuri (Meitei) vocabulary written in Bengali script, contributed by teachers, educators and language enthusiasts.</p>
+    <p>Each entry records the word in Bengali script, its first letter classification, its meaning in Assamese, and its English translation — building a multilingual reference for Manipuri learners.</p>
     <p>Contributions are open to all educators and language professionals. Use the <strong>Add New Word</strong> button to submit a new word.</p>
     <p style="font-size:12px; margin-top: 24px;">Managed by workwithsingha@gmail.com</p>
   </div>
@@ -496,7 +496,6 @@
   function closeForm() {
     document.getElementById('modal').classList.remove('open');
     document.body.style.overflow = '';
-    // Reload form src to reset it
     setTimeout(() => { document.getElementById('form-iframe').src = ''; }, 300);
   }
   function handleOverlayClick(e) {
@@ -516,7 +515,14 @@
     try {
       const res = await fetch(API_URL);
       const text = await res.text();
-      const json = JSON.parse(text.replace(/^[^{]+/, '').replace(/;$/, ''));
+      
+      // Remove Google Visualization API wrapper - match from { to };
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error('Invalid response format from Google Sheets');
+      }
+      
+      const json = JSON.parse(jsonMatch[0]);
       const rows = json.table.rows;
 
       // cols: A=Timestamp, B=Word, C=FirstLetter, D=Assamese, E=English, F=Contributor, G=Workplace, H=Confidence, I=Date
@@ -533,7 +539,8 @@
       renderEntries(allEntries);
 
     } catch (err) {
-      container.innerHTML = `<div class="empty-state">⚠ Could not load entries. The sheet may need to be made public.<br><small>${err.message}</small></div>`;
+      console.error('Error loading entries:', err);
+      container.innerHTML = `<div class="empty-state">⚠ Could not load entries. Please ensure the Google Sheet is public and shared correctly.<br><small>Error: ${err.message}</small></div>`;
       document.getElementById('top-name').textContent = '—';
     }
   }
