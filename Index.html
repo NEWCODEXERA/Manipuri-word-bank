@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manipuri New Word Bank</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1410;
+    --paper: #f5f0e8;
+    --saffron: #e07b39;
+    --gold: #c9972c;
+    --muted: #7a6f62;
+    --border: #d4c9b8;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 48px 24px 36px;
+    text-align: center;
+    border-bottom: 2px solid var(--border);
+    position: relative;
+    background: linear-gradient(160deg, #fdf8f0 0%, #f0e9d8 100%);
+  }
+
+  .hero-script {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--saffron);
+    margin-bottom: 12px;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 6vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  .hero h1 span {
+    color: var(--saffron);
+  }
+
+  .hero p {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 420px;
+    margin: 0 auto 28px;
+    line-height: 1.6;
+  }
+
+  .hero-ornament {
+    font-size: 22px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    opacity: 0.6;
+    margin-bottom: 4px;
+  }
+
+  /* ── BUTTONS ── */
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 24px 16px;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .btn {
+    padding: 11px 22px;
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+
+  .btn-primary {
+    background: var(--saffron);
+    color: var(--white);
+    border-color: var(--saffron);
+  }
+  .btn-primary:hover { background: #c96b2a; border-color: #c96b2a; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--border);
+  }
+  .btn-outline:hover { border-color: var(--saffron); color: var(--saffron); }
+
+  .btn-outline.active {
+    border-color: var(--saffron);
+    color: var(--saffron);
+    background: #fdf3ec;
+  }
+
+  /* ── PAGES ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── FORM MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,20,16,0.55);
+    z-index: 200;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal-box {
+    background: var(--white);
+    width: 100%;
+    max-width: 700px;
+    height: 90vh;
+    border-radius: 16px 16px 0 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .modal-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--paper);
+  }
+
+  .modal-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--ink);
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--muted);
+    line-height: 1;
+    padding: 4px;
+  }
+  .close-btn:hover { color: var(--ink); }
+
+  .modal-box iframe {
+    flex: 1;
+    border: none;
+    width: 100%;
+  }
+
+  /* ── RECENT ENTRIES PAGE ── */
+  .entries-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .section-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  /* Top Contributor Box */
+  .contributor-box {
+    background: linear-gradient(135deg, #1a1410 0%, #3a2e25 100%);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .contributor-crown {
+    font-size: 30px;
+    flex-shrink: 0;
+  }
+
+  .contributor-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 3px;
+  }
+
+  .contributor-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .contributor-count {
+    font-size: 12px;
+    color: #b0a090;
+    margin-top: 2px;
+  }
+
+  /* Filter dropdown */
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .filter-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .filter-select {
+    padding: 7px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    background: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .filter-select:focus { outline: none; border-color: var(--saffron); }
+
+  /* Word cards */
+  .word-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: start;
+    transition: border-color 0.15s;
+  }
+
+  .word-card:hover { border-color: var(--saffron); }
+
+  .word-letter-badge {
+    width: 36px;
+    height: 36px;
+    background: #fdf3ec;
+    border: 1.5px solid var(--saffron);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--saffron);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .word-main {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+
+  .word-meta {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .word-meta strong { color: var(--ink); }
+
+  .loading-state, .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid var(--border);
+    border-top-color: var(--saffron);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0;
+  }
+
+  /* about page */
+  .about-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 32px 20px;
+  }
+  .about-page p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-ornament">✦ ✦ ✦</div>
+  <p class="hero-script">Meitei · মণিপুরি · মনিপুৰী</p>
+  <h1>Manipuri New<br><span>Word Bank</span></h1>
+  <p>A community-driven lexicon of Manipuri vocabulary in Bengali script, built by educators and language enthusiasts.</p>
+</section>
+
+<!-- NAV BUTTONS -->
+<div class="btn-row">
+  <button class="btn btn-primary" onclick="openForm()">＋ Add New Word</button>
+  <button class="btn btn-outline" id="btn-recent" onclick="showPage('recent')">Recent Entries</button>
+  <button class="btn btn-outline" id="btn-about" onclick="showPage('about')">About</button>
+</div>
+
+<!-- RECENT ENTRIES PAGE -->
+<div class="page active" id="page-recent">
+  <div class="entries-page">
+
+    <!-- Top Contributor -->
+    <div class="contributor-box" id="contributor-box">
+      <div class="contributor-crown">👑</div>
+      <div>
+        <div class="contributor-label">Top Contributor</div>
+        <div class="contributor-name" id="top-name">Loading…</div>
+        <div class="contributor-count" id="top-count"></div>
+      </div>
+    </div>
+
+    <div class="section-title">Recent Entries</div>
+    <div class="section-sub">Last 10 words added to the word bank</div>
+
+    <!-- Filter -->
+    <div class="filter-row">
+      <span class="filter-label">Filter by first letter:</span>
+      <select class="filter-select" id="letter-filter" onchange="filterEntries()">
+        <option value="">All Letters</option>
+        <option value="অ (O / A)">অ (O / A)</option>
+        <option value="আ (Aa)">আ (Aa)</option>
+        <option value="ই (I)">ই (I)</option>
+        <option value="ঈ (Ee)">ঈ (Ee)</option>
+        <option value="উ (U)">উ (U)</option>
+        <option value="ঊ (Oo)">ঊ (Oo)</option>
+        <option value="এ (E)">এ (E)</option>
+        <option value="ঐ (Oi)">ঐ (Oi)</option>
+        <option value="ও (O)">ও (O)</option>
+        <option value="ঔ (Ou)">ঔ (Ou)</option>
+        <option value="ক (K)">ক (K)</option>
+        <option value="খ (Kh)">খ (Kh)</option>
+        <option value="গ (G)">গ (G)</option>
+        <option value="ঙ (Ng)">ঙ (Ng)</option>
+        <option value="চ (Ch)">চ (Ch)</option>
+        <option value="ছ (Chh)">ছ (Chh)</option>
+        <option value="জ (J)">জ (J)</option>
+        <option value="ঝ (Jh)">ঝ (Jh)</option>
+        <option value="ঞ (Nyo)">ঞ (Nyo)</option>
+        <option value="ট (T)">ট (T)</option>
+        <option value="ঠ (Th)">ঠ (Th)</option>
+        <option value="ড (D)">ড (D)</option>
+        <option value="ঢ (Dh)">ঢ (Dh)</option>
+        <option value="ণ (N)">ণ (N)</option>
+        <option value="ত (T)">ত (T)</option>
+        <option value="থ (Th)">থ (Th)</option>
+        <option value="দ (D)">দ (D)</option>
+        <option value="ধ (Dh)">ধ (Dh)</option>
+        <option value="ন (N)">ন (N)</option>
+        <option value="প (P)">প (P)</option>
+        <option value="ফ (Ph)">ফ (Ph)</option>
+        <option value="ব (B)">ব (B)</option>
+        <option value="ভ (Bh)">ভ (Bh)</option>
+        <option value="ম (M)">ম (M)</option>
+        <option value="য (J)">য (J)</option>
+        <option value="র (R)">র (R)</option>
+        <option value="ল (L)">ল (L)</option>
+        <option value="শ (Sh)">শ (Sh)</option>
+        <option value="ষ (Sh)">ষ (Sh)</option>
+        <option value="স (S)">স (S)</option>
+        <option value="হ (H)">হ (H)</option>
+        <option value="ড় (Rro)">ড় (Rro)</option>
+        <option value="ঢ় (Rrho)">ঢ় (Rrho)</option>
+        <option value="য় (Y)">য় (Y)</option>
+      </select>
+    </div>
+
+    <div id="entries-container">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        Fetching latest entries…
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="page" id="page-about">
+  <div class="about-page">
+    <div class="section-title">About This Project</div>
+    <div class="divider"></div>
+    <p>The <strong>Manipuri New Word Bank</strong> is a collaborative initiative to document and preserve Manipuri (Meitei) vocabulary written in Bengali script, contributed by teachers, educators, and language enthusiasts.</p>
+    <p>Each entry records the word in Bengali script, its first letter classification, its meaning in Assamese, and its English translation — building a multilingual reference for Manipuri learners.</p>
+    <p>Contributions are open to all educators and language professionals. Use the <strong>Add New Word</strong> button to submit a new word.</p>
+    <p style="font-size:12px; margin-top: 24px;">Managed by workwithsingha@gmail.com</p>
+  </div>
+</div>
+
+<!-- FORM MODAL -->
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Add New Manipuri Word</h3>
+      <button class="close-btn" onclick="closeForm()">✕</button>
+    </div>
+    <iframe id="form-iframe" src="" loading="lazy" title="Add New Word Form"></iframe>
+  </div>
+</div>
+
+<script>
+  // ── NAV ──
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.btn-outline').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.getElementById('btn-' + name).classList.add('active');
+    if (name === 'recent') loadEntries();
+  }
+
+  // ── FORM MODAL ──
+  const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfpaO4ISNFHQMLv6cGVlm2aeDjfqqtujAEPLjpmKcqP4HUQog/viewform?embedded=true';
+
+  function openForm() {
+    document.getElementById('form-iframe').src = FORM_URL;
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeForm() {
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+    // Reload form src to reset it
+    setTimeout(() => { document.getElementById('form-iframe').src = ''; }, 300);
+  }
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modal')) closeForm();
+  }
+
+  // ── DATA ──
+  const SHEET_ID = '16rObYVlMCT7rkBnMpRotCA46Yb5JojibUR0m8SrLu5I';
+  const API_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Form%20responses%201`;
+
+  let allEntries = [];
+
+  async function loadEntries() {
+    const container = document.getElementById('entries-container');
+    container.innerHTML = `<div class="loading-state"><div class="spinner"></div>Fetching latest entries…</div>`;
+
+    try {
+      const res = await fetch(API_URL);
+      const text = await res.text();
+      const json = JSON.parse(text.replace(/^[^{]+/, '').replace(/;$/, ''));
+      const rows = json.table.rows;
+
+      // cols: A=Timestamp, B=Word, C=FirstLetter, D=Assamese, E=English, F=Contributor, G=Workplace, H=Confidence, I=Date
+      allEntries = rows.map(r => ({
+        word:        r.c[1]?.v || '',
+        letter:      r.c[2]?.v || '',
+        assamese:    r.c[3]?.v || '',
+        english:     r.c[4]?.v || '',
+        contributor: r.c[5]?.v || 'Anonymous',
+        timestamp:   r.c[0]?.v || '',
+      })).filter(e => e.word);
+
+      computeTopContributor();
+      renderEntries(allEntries);
+
+    } catch (err) {
+      container.innerHTML = `<div class="empty-state">⚠ Could not load entries. The sheet may need to be made public.<br><small>${err.message}</small></div>`;
+      document.getElementById('top-name').textContent = '—';
+    }
+  }
+
+  function computeTopContributor() {
+    const counts = {};
+    allEntries.forEach(e => {
+      const name = e.contributor.trim() || 'Anonymous';
+      counts[name] = (counts[name] || 0) + 1;
+    });
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    if (sorted.length > 0) {
+      document.getElementById('top-name').textContent = sorted[0][0];
+      document.getElementById('top-count').textContent = sorted[0][1] + ' word' + (sorted[0][1] > 1 ? 's' : '') + ' contributed';
+    } else {
+      document.getElementById('top-name').textContent = 'No entries yet';
+    }
+  }
+
+  function filterEntries() {
+    const filter = document.getElementById('letter-filter').value;
+    const filtered = filter ? allEntries.filter(e => e.letter === filter) : allEntries;
+    renderEntries(filtered);
+  }
+
+  function renderEntries(entries) {
+    const container = document.getElementById('entries-container');
+    const recent = entries.slice(-10).reverse();
+
+    if (recent.length === 0) {
+      container.innerHTML = `<div class="empty-state">No entries found for this filter.</div>`;
+      return;
+    }
+
+    container.innerHTML = recent.map(e => `
+      <div class="word-card">
+        <div class="word-letter-badge">${e.letter ? e.letter.charAt(0) : '?'}</div>
+        <div>
+          <div class="word-main">${e.word}</div>
+          <div class="word-meta">
+            ${e.english ? `<strong>English:</strong> ${e.english}<br>` : ''}
+            ${e.assamese ? `<strong>Assamese:</strong> ${e.assamese}<br>` : ''}
+            ${e.letter ? `<strong>Letter:</strong> ${e.letter}<br>` : ''}
+            <strong>By:</strong> ${e.contributor}
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Load entries on start
+  loadEntries();
+  document.getElementById('btn-recent').classList.add('active');
+</script>
+</body>
+</html>
